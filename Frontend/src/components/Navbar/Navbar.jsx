@@ -5,20 +5,18 @@ import './Navbar.css';
 const Navbar = ({ isAuthenticated, onLogout }) => {
   const navigate = useNavigate();
 
-  const handleLogoutClick = (e) => { // <-- Add 'e' here
+  const handleLogoutClick = (e) => {
     e.preventDefault();
     onLogout();
-    navigate('/'); // або перенаправити на логін
+    navigate('/');
   };
 
   return (
     <header className="header">
-      <Link to="/" className="logo">Url Shortener</Link>
-
+      <Link to="/" className="logo">URL Shortener</Link>
       <nav className="navbar">
         <Link to="/ShortUrlsTable">Short URLs Table</Link>
         <Link to="/About">About</Link>
-
         {isAuthenticated ? (
           <a href="#" onClick={handleLogoutClick} className="logout-link">Log Out</a>
         ) : (

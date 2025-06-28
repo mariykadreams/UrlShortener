@@ -91,9 +91,15 @@ function ShortUrlsTable({ isLoggedIn }) {
         const errorData = await response.json();
         throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       } else {
-        setMessage({ type: 'success', text: 'URL shortened successfully!' });
+        const createdUrl = await response.json();
+        const shortLink = `${SHORT_URL_BASE}/${createdUrl.shortCode}`;
+        setMessage({
+          type: 'success',
+          text: `Your new short link: `,
+          link: shortLink
+        });
         setNewOriginalUrl('');
-        await fetchUrls();
+        setUrls(prev => [createdUrl, ...prev]);
       }
     } catch (error) {
       console.error('Error adding URL:', error);
@@ -161,15 +167,19 @@ function ShortUrlsTable({ isLoggedIn }) {
     }
   }, [isLoggedIn]);
 
-  // Кнопка Delete всегда активна, не дизейблится
-  const canDeleteUrl = () => true;
-
   return (
     <div className="container">
       <h2 className="heading">Short URLs Table</h2>
 
       {message.text && (
-        <div className={`message ${message.type}`}>{message.text}</div>
+        <div className={`message ${message.type}`}>
+          {message.text}
+          {message.link && (
+            <a href={message.link} target="_blank" rel="noopener noreferrer">
+              {message.link}
+            </a>
+          )}
+        </div>
       )}
 
       {isLoggedIn && (
@@ -228,7 +238,6 @@ function ShortUrlsTable({ isLoggedIn }) {
                       <button
                         className="action-button delete"
                         onClick={() => confirmDelete(url.id, url.originalUrl)}
-                        // Кнопка всегда активна, поэтому disabled нет
                       >
                         Delete
                       </button>

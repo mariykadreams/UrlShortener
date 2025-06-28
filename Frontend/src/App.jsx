@@ -27,19 +27,13 @@ function App() {
   return (
     <Router>
       <Navbar isAuthenticated={isAuthenticated} onLogout={handleLogout} />
-      {/* Add a div with className="App" to apply the padding-top */}
       <div className="App">
         <Routes>
-          {/* Страница доступна всем, независимо от авторизации */}
-          <Route path="/ShortUrlsTable" element={<ShortUrlsTable isLoggedIn={isAuthenticated} onNavigate={() => {}} />} />
-          
+          <Route path="/ShortUrlsTable" element={<ShortUrlsTable isLoggedIn={isAuthenticated} />} />
           <Route path="/ShortUrlInfo/:id" element={<ShortURLInfo />} />
           <Route path="/About" element={<About />} />
-          {/* Страница входа */}
           <Route path="/SignInForm" element={<LoginSignupForm onLoginSuccess={handleLoginSuccess} />} />
-
-          {/* Можно добавить главную или другие страницы */}
-          <Route path="/" element={<ShortUrlsTable />} /> {/* Add a default route if needed */}
+          <Route path="/" element={<ShortUrlsTable isLoggedIn={isAuthenticated} />} />
         </Routes>
       </div>
     </Router>
