@@ -1,3 +1,7 @@
+# To enter as admin:
+username: admin
+password: 123456M
+
 # TASK
 The goal of this project is to develop a URL Shortener application that allows users to generate shortened versions of long URLs and navigate to the original URLs using the short links.
 
@@ -127,3 +131,8 @@ When a request is received:
 - If not found, it returns a 404 Not Found error.
 
 This setup avoids longer paths like /api/urls/redirect/{code} and produces cleaner, more shareable URLs.
+
+
+![image](https://github.com/user-attachments/assets/1a75085b-ea8c-440d-a57f-1b197bf7778d)
+![image](https://github.com/user-attachments/assets/c88cf70a-8e13-4bf6-8435-595063137dd2)
+
