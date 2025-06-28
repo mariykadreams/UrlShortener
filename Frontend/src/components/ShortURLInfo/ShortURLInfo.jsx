@@ -6,7 +6,7 @@ const BASE_API_URL = 'https://localhost:7283/api/Urls';
 const SHORT_URL_BASE = 'https://localhost:7283';
 
 function ShortURLInfo() {
-  const { id } = useParams(); // <--- Получаем id из URL
+  const { id } = useParams();
   const [url, setUrl] = useState(null);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [loading, setLoading] = useState(false);
