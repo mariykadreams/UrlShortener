@@ -17,7 +17,7 @@ const Navbar = ({ isAuthenticated, onLogout }) => {
 
       <nav className="navbar">
         <Link to="/ShortUrlsTable">Short URLs Table</Link>
-        <Link to="/about">About</Link>
+        <Link to="/About">About</Link>
 
         {isAuthenticated ? (
           <a href="#" onClick={handleLogoutClick} className="logout-link">Log Out</a>

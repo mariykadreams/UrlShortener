@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import LoginSignupForm from './components/SignInForm/LoginSignupForm';
 import ShortUrlsTable from './components/ShortUrlsTable/ShortUrlsTable';
 import ShortURLInfo from './components/ShortURLInfo/ShortURLInfo';
-
+import About from './components/About/About';
 import './App.css';
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
           <Route path="/ShortUrlsTable" element={<ShortUrlsTable isLoggedIn={isAuthenticated} onNavigate={() => {}} />} />
           
           <Route path="/ShortUrlInfo/:id" element={<ShortURLInfo />} />
+          <Route path="/About" element={<About />} />
           {/* Страница входа */}
           <Route path="/SignInForm" element={<LoginSignupForm onLoginSuccess={handleLoginSuccess} />} />
 
