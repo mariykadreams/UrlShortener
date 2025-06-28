@@ -95,7 +95,7 @@ function ShortUrlsTable({ isLoggedIn }) {
         const shortLink = `${SHORT_URL_BASE}/${createdUrl.shortCode}`;
         setMessage({
           type: 'success',
-          text: `Your new short link: `,
+          text: `Your new link: `,
           link: shortLink
         });
         setNewOriginalUrl('');
