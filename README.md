@@ -61,6 +61,19 @@ Requirements:
      - [x] CreatedDate
      - [x] Any other available metadata (e.g., short code, original URL)
 
+### ✅ About View
+
+Requirements:
+
+- [x] Visible to everyone, including anonymous users
+
+- [ ] Editable (only by Admin users)
+
+- Contains:
+
+     - [x] Description of the algorithm (e.g., hashing, Base62 encoding, collision handling)
+
+Submit action to allow editing (only for admins)
 
 # URL Shortener Algorithm Description
 The URL Shortener Service generates a unique, fixed-length short code for each original URL. The algorithm ensures that each short URL is compact, unique, and easy to use.
