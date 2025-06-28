@@ -11,19 +11,18 @@ namespace UrlShortener.API.Data
         {
         }
 
-        public DbSet<ShortenedUrl> ShortenedUrls { get; set; } = null!; // Add this line
+        public DbSet<ShortenedUrl> ShortenedUrls { get; set; } = null!; 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // Configure the relationship between ShortenedUrl and IdentityUser
             builder.Entity<ShortenedUrl>()
                 .HasOne(su => su.CreatedByUser)
                 .WithMany()
                 .HasForeignKey(su => su.CreatedByUserId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete of user when URL is deleted
+                .OnDelete(DeleteBehavior.Restrict); 
         }
     }
 }

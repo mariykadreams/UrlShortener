@@ -11,7 +11,7 @@ namespace UrlShortener.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // All actions in this controller require authentication by default
+    [Authorize]
     public class UrlsController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -25,11 +25,8 @@ namespace UrlShortener.API.Controllers
             _userManager = userManager;
         }
 
-        /// <summary>
-        /// Gets all shortened URLs. Anonymous users can view, authorized users can view their own, and admins can view all.
-        /// </summary>
         [HttpGet]
-        [AllowAnonymous] // Anonymous users can see the table
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllShortenedUrls()
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -63,11 +60,6 @@ namespace UrlShortener.API.Controllers
             return Ok(result);
         }
 
-
-        /// <summary>
-        /// Gets details for a specific shortened URL. Anonymous users cannot access this.
-        /// </summary>
-        /// <param name="id">The ID of the shortened URL.</param>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetShortenedUrlDetails(int id)
         {
@@ -96,10 +88,7 @@ namespace UrlShortener.API.Controllers
             });
         }
 
-
-
         [HttpPost("add")]
-        [Authorize]
         public async Task<IActionResult> AddShortenedUrl([FromBody] CreateShortenedUrlRequest request)
         {
             if (!ModelState.IsValid)
@@ -107,15 +96,6 @@ namespace UrlShortener.API.Controllers
 
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Admin");
-
-            Console.WriteLine($"--- AddShortenedUrl Request ---");
-            Console.WriteLine($"Token Info: OriginalUrl = {request.OriginalUrl}");
-            Console.WriteLine($"Token Info: Retrieved User ID (ClaimTypes.NameIdentifier) = {currentUserId ?? "NULL/EMPTY"}");
-            Console.WriteLine($"Token Info: Is User Admin? = {isAdmin}");
-            Console.WriteLine($"-------------------------------");
-            // --- END: Added Console.WriteLine statements ---
-
-            Console.WriteLine($"CurrentUserId: {currentUserId}");
 
             if (string.IsNullOrEmpty(currentUserId))
                 return Unauthorized("Token is invalid or missing NameIdentifier");
@@ -128,12 +108,9 @@ namespace UrlShortener.API.Controllers
                 return Conflict("This URL has already been shortened by you or an admin.");
             }
 
-            // FIX: Pass request.OriginalUrl to GenerateShortCode
             var shortCode = _urlShorteningService.GenerateShortCode(request.OriginalUrl);
             while (await _context.ShortenedUrls.AnyAsync(u => u.ShortCode == shortCode))
             {
-                // If a collision occurs even with the hashing, generate a new one
-                // This might indicate a very high collision rate or issues with the hashing input.
                 shortCode = _urlShorteningService.GenerateShortCode(request.OriginalUrl + Guid.NewGuid().ToString());
             }
 
@@ -158,13 +135,6 @@ namespace UrlShortener.API.Controllers
             });
         }
 
-
-
-
-        /// <summary>
-        /// Deletes a shortened URL. Only the creator or an admin can delete.
-        /// </summary>
-        /// <param name="id">The ID of the shortened URL to delete.</param>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteShortenedUrl(int id)
         {
@@ -178,7 +148,6 @@ namespace UrlShortener.API.Controllers
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var isAdmin = User.IsInRole("Admin");
 
-            // Authorization check: User can delete their own URLs, Admin can delete any
             if (urlToDelete.CreatedByUserId != currentUserId && !isAdmin)
             {
                 return Forbid("You do not have permission to delete this URL.");
@@ -187,15 +156,11 @@ namespace UrlShortener.API.Controllers
             _context.ShortenedUrls.Remove(urlToDelete);
             await _context.SaveChangesAsync();
 
-            return NoContent(); // 204 No Content for successful deletion
+            return NoContent();
         }
 
-        /// <summary>
-        /// Redirects to the original URL given a short code. Accessible by everyone.
-        /// </summary>
-        /// <param name="shortCode">The short code to redirect from.</param>
         [HttpGet("redirect/{shortCode}")]
-        [AllowAnonymous] // Everyone can access this for redirection
+        [AllowAnonymous]
         public async Task<IActionResult> RedirectToOriginalUrl(string shortCode)
         {
             var url = await _context.ShortenedUrls.FirstOrDefaultAsync(u => u.ShortCode == shortCode);

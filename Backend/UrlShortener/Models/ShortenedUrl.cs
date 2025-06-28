@@ -13,14 +13,13 @@ namespace UrlShortener.API.Models
         public string OriginalUrl { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(10, MinimumLength = 7)] // Example: short code length
+        [StringLength(10, MinimumLength = 7)]
         public string ShortCode { get; set; } = string.Empty;
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
-        // Foreign key for the IdentityUser who created this URL
         public string CreatedByUserId { get; set; } = string.Empty;
-        public IdentityUser? CreatedByUser { get; set; } // Navigation property
+        public IdentityUser? CreatedByUser { get; set; } 
     }
 
     public class CreateShortenedUrlRequest
