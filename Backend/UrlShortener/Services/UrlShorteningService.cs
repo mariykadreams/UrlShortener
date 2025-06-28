@@ -37,7 +37,7 @@ namespace UrlShortener.API.Services
                 }
             }
 
-            throw new InvalidOperationException("Не удалось сгенерировать уникальный короткий код после нескольких попыток.");
+            throw new InvalidOperationException("Failed to generate a unique short code after several attempts.");
         }
     }
     public static class Base62Converter
