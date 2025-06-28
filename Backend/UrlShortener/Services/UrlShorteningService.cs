@@ -37,13 +37,15 @@ namespace UrlShortener.API.Services
                 }
             }
 
-            throw new InvalidOperationException("Не удалось сгенерировать уникальный короткий код после нескольких попыток.");
+            throw new InvalidOperationException("Failed to generate a unique short code after several attempts.");
         }
     }
+
     public static class Base62Converter
     {
         public const string Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         private static readonly int Base = Alphabet.Length;
+
         public static string Encode(long number)
         {
             if (number == 0)
